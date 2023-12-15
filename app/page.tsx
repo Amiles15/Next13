@@ -3,63 +3,27 @@
 import Link from "next/link";
 import React from "react";
 import { useState } from "react";
+import NavComp from "./Component/Navbar/nav";
 
 export default function Home() {
 
-  const [dropdown,setDropdown] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
-  const handlehover = () => {
-      setDropdown(!dropdown)
-  }
+  const handleMenuToggle = () => {
+    setMenuOpen(!isMenuOpen);
+  };
+ 
+  const handleDropdownToggle = (isOpen : boolean) => {
+      setDropdown(isOpen);
+  };
+
 
   return (
-    <main className="mb-5 px-4">
-      {/* Navbar FLowbite */}
-      <nav className="bg-white border-gray-200 dark:bg-gray-900">
-        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <a className="flex items-center">
-            <img src="/src/matcha.jpg" className="h-8 mr-3" />
-            <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">
-              Matcha
-            </span>
-          </a>
-          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              <li>
-                <Link href={"/"}>
-                  <label
-                    className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
-                    aria-current="page"
-                  >
-                    Home
-                  </label>
-                </Link>
-              </li>
-              <li>
-                <Link href={"/page"}>
-                  <label
-                    className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
-                    aria-current="page"
-                  >
-                    Page
-                  </label>
-                </Link>
-              </li>
-              <li>  
-              <button onClick={handlehover} 
-                  className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500">User</button>
-                {dropdown && (
-                  <div className="dropdown-content z-10 divide-y divide-gray-300 rounded-lg shadow w-20 dark:bg-gray-500">
-                    {/* Dropdown content goes here */}
-                    <p>Profile</p>
-                    <p>Logout</p>
-                  </div>
-                )}
-              </li> 
-            </ul>
-          </div>
-        </div>
-      </nav>
+    <main >
+
+    <NavComp></NavComp>
+     
 
       {/* Hero Section */}
       <section className="bg-center bg-no-repeat bg-[url('/src/matcha.jpg')] bg-gray-700 bg-blend-multiply">
@@ -86,9 +50,9 @@ export default function Home() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M1 5h12m0 0L9 1m4 4L9 9"
                 />
               </svg>
@@ -203,3 +167,4 @@ export default function Home() {
     </main>
   );
 }
+
