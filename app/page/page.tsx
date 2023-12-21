@@ -1,6 +1,7 @@
 
 
 import React from "react";
+import SliderComp from "../Component/Slider/slider";
 
 export const metadata = {
   title: "Menu",
@@ -41,6 +42,9 @@ const page = () => {
 
   return (
     <>
+
+      <SliderComp></SliderComp>
+
       <div className="p-16 px-4 text-center text-2xl">
         <h3>Menu Baru</h3>
       </div>

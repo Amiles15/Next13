@@ -38,7 +38,9 @@ const page = () => {
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
   const totalPage = Math.ceil(data.length / itemPerPage);
-  const numberPage = [...Array(totalPage + 1).keys()].slice(1);
+  // const numberPage = [...Array(totalPage + 1).keys()].slice(1);
+  const numberPage = Array.from(Array(totalPage).keys()).map(i => i + 1);
+
 
   const prevPage = () => {
     if (currentPage !== 1) {

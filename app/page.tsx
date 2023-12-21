@@ -21,10 +21,9 @@ export default function Home() {
 
   return (
     <main >
-
-    <NavComp></NavComp>
+   
+      <NavComp></NavComp>
      
-
       {/* Hero Section */}
       <section className="bg-center bg-no-repeat bg-[url('/src/matcha.jpg')] bg-gray-700 bg-blend-multiply">
         <div className="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
@@ -165,6 +164,7 @@ export default function Home() {
       </footer>
       {/* Footer End */}
     </main>
+   
   );
 }
 
