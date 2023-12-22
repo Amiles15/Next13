@@ -7,33 +7,36 @@ import Slider from "react-slick";
 const SliderComp = () => {
   const DataNewMenus = [
     {
-      imagesrc: "/src/matcha.jpg",
-      title: "matcha 1",
+      imagesrc: "/src/Matcha/blueberrymatcha.jpg",
+      title: "Blueberry Matcha",
       description: "Our Mactha Is Best Flafour",
       buttonText: "Read more",
+      harga:'Rp.40.000'
     },
 
     {
-      imagesrc: "/src/matcha.jpg",
-      title: "matcha 2",
+      imagesrc: "/src/Matcha/MatchaSakura.jpg",
+      title: "Matcha Sakura",
       description: "Our Mactha Is Best Flafour",
       buttonText: "Read more",
+      harga:'Rp.25.000'
     },
 
     {
-      imagesrc: "/src/matcha.jpg",
-      title: "matcha 3",
+      imagesrc: "/src/Matcha/strawberryMatcha.jpg",
+      title: "Strawberry Matcha",
       description: "Our Mactha Is Best Flafour",
       buttonText: "Read more",
+      harga:'22.000'
     },
     {
       imagesrc: "/src/matcha.jpg",
-      title: "matcha 4",
+      title: "Matcha Nihonjin",
       description: "Our Mactha Is Best Flafour",
       buttonText: "Read more",
+      harga:'20.000'
     },
   ];
-
   const settings = {
     dots: true,
     infinite: false,
@@ -70,26 +73,26 @@ const SliderComp = () => {
   };
 
   return (
-  
-
-<div className="w-full flex justify-center items-center mt-8">
-  <Slider {...settings} className="w-9/12">
-    {DataNewMenus.map((item, index) => (
-      <div className="card rounded-lg border-md overflow-hidden cursor-pointer h-[400px] border-[8px]" key={index}>
-        <div className="card-top">
-          <img src={item.imagesrc} alt={item.title} />
-          <h1 className="px-2">{item.title}</h1>
-        </div>
-        {/* Uncomment the following lines if you have 'price' and 'category' in your data */}
-        {/* <div className="card-bottom">
-            <h3>{item.price}</h3>
-            <span className="category">{item.category}</span>
-          </div> */}
+    <><div>
+      <h1 className="text-center font-semibold text-lg">New Arrival</h1>
+    </div>
+    <div className="w-full flex justify-center items-center mt-8">
+        <Slider {...settings} className="w-9/12">
+          {DataNewMenus.map((item, index) => (
+            
+            <div className="card rounded-lg border-md overflow-hidden cursor-pointer md:h-[280px] border-[8px]" key={index}>
+              <div className="card-top w-full bg-slate-400">
+                <span className="z-40 bg-slate-500 bg-opacity-10">
+                   <h1 className="px-2">{item.title}</h1>
+                   <h2 className="px-2">{item.harga}</h2>
+                </span>
+                <img src={item.imagesrc} alt={item.title} />
+              </div>
+            </div>
+          ))}
+        </Slider>
       </div>
-    ))}
-  </Slider>
-</div>
-
+      </>
   );
 };
 

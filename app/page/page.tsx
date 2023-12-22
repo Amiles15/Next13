@@ -1,6 +1,6 @@
+"use client";
 
-
-import React from "react";
+import React, { useState } from "react";
 import SliderComp from "../Component/Slider/slider";
 
 export const metadata = {
@@ -9,93 +9,135 @@ export const metadata = {
 };
 
 const page = () => {
-  // map
-  const data = [
+  // RAW DATA
+  const datamatcha = [
     {
-      imagesrc: "/src/matcha.jpg",
-      title: "matcha 1",
+      imagesrc: "/src/coldbrew.jpg",
+      title: "Cold Brew Coffe",
       description: "Our Mactha Is Best Flafour",
       buttonText: "Read more",
+      category: "Non Matcha",
     },
 
     {
       imagesrc: "/src/matcha.jpg",
-      title: "matcha 2",
+      title: "Matcha Original",
       description: "Our Mactha Is Best Flafour",
       buttonText: "Read more",
+      category: "Matcha",
     },
 
     {
-      imagesrc: "/src/matcha.jpg",
-      title: "matcha 3",
+      imagesrc: "/src/dalgona_latte.jpg",
+      title: "Dalgona Late",
       description: "Our Mactha Is Best Flafour",
       buttonText: "Read more",
+      category: "Non Matcha",
     },
     {
-      imagesrc: "/src/matcha.jpg",
-      title: "matcha 4",
+      imagesrc: "/src/matcha_coffee.jpg",
+      title: "Matcha Coffee",
       description: "Our Mactha Is Best Flafour",
       buttonText: "Read more",
+      category: "Matcha",
     },
   ];
-  //map End
+
+  const categories = Array.from(
+    new Set(datamatcha.map((item) => item.category))
+  );
+
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const handleCategoryChange = (e: any) => {
+    setSelectedCategory(e.target.value);
+  };
 
   return (
     <>
+      <div className="">
+        <SliderComp></SliderComp>
 
-      <SliderComp></SliderComp>
+        <div className="p-10 px-4 text-center text-lg flex justify-between items-center">
+          <h3 className="text-center">Our Best Product</h3>
+          <select
+            className="w-32 rounded-lg bg-blue-300 bg-opacity-50 font-normal text-sm text-center"
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+          >
+            <option value="Matcha">All Categories</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="p-16 px-4 text-center text-2xl">
-        <h3>Menu Baru</h3>
-      </div>
-
-      {/* Card Start */}
-      <div className="w-full flex item-center justify-center px-4 mb-2">
-        <div className="grid grid-cols-2">
-          {data.map((item, index) => (
-            <div className="px-5 mb-5">
-              <div
-                key={index}
-                className="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-              >
-                <figure>
-                  <img src={item.imagesrc} alt="matcha" height={20} />
-                </figure>
-                <a href="#">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    {item.title}
-                  </h5>
-                </a>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  {item.description}
-                </p>
-                <a
-                  href="#"
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  {item.buttonText}
-                  <svg
-                    className="w-3.5 h-3.5 ml-2"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 14 10"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M1 5h12m0 0L9 1m4 4L9 9"
-                    />
-                  </svg>
-                </a>
+        <div className="w-full flex items-center justify-center px-4 mb-2">
+          {categories.map((category) => (
+            <div
+              key={category}
+              className={selectedCategory === category ? "" : "hidden"}
+            >
+              <h2 className="text-2xl font-semibold mb-2 text-center">
+                {category}
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                {datamatcha
+                  .filter(
+                    (item) =>
+                      selectedCategory === "All" ||
+                      item.category === selectedCategory
+                  )
+                  .map((item, index) => (
+                    <div className="px-3 mb-5" key={index}>
+                      <div className="px-3 mb-5">
+                        <div
+                          key={index}
+                          className="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                        >
+                          <figure>
+                            <img src={item.imagesrc} alt="matcha" height={20} />
+                          </figure>
+                          <a href="#">
+                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                              {item.title}
+                            </h5>
+                          </a>
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            {item.description}
+                          </p>
+                          <a
+                            href="#"
+                            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          >
+                            {item.buttonText}
+                            <svg
+                              className="w-3.5 h-3.5 ml-2"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 14 10"
+                            >
+                              <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9"
+                              />
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
               </div>
             </div>
           ))}
         </div>
       </div>
-      {/* Card  End*/}
     </>
   );
 };
