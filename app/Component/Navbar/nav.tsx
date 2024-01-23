@@ -81,12 +81,14 @@ const NavComp = () => {
               )}
             </li>
             <li className="mx-4 my-6 md:my-0">
+              <Link href={'/login'}>
               <label
                 className="nav-link hover:text-gray-800 ease-in-out"
                 aria-current="page"
               >
                 Login
               </label>
+              </Link>
             </li>
           </div>
         </ul>

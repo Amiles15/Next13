@@ -42,16 +42,14 @@ const page = () => {
       category: "Matcha",
     },
   ];
-
   const categories = Array.from(
     new Set(datamatcha.map((item) => item.category))
   );
-
   const [selectedCategory, setSelectedCategory] = useState("All");
-
   const handleCategoryChange = (e: any) => {
     setSelectedCategory(e.target.value);
   };
+  
 
   return (
     <>
@@ -65,7 +63,7 @@ const page = () => {
             value={selectedCategory}
             onChange={handleCategoryChange}
           >
-            <option value="Matcha">All Categories</option>
+            <option value="All Category">All Categories</option>
             {categories.map((category, index) => (
               <option key={index} value={category}>
                 {category}
