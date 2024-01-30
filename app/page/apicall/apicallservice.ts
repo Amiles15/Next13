@@ -1,6 +1,6 @@
 
 
-const fetchData = async (endpoint: string) => {
+  const getData = async (endpoint: string) => {
     try {
       const url = `${process.env.NEXT_PUBLIC_URLEXPRESS}${endpoint}`;
       const response = await fetch(url);
@@ -15,9 +15,28 @@ const fetchData = async (endpoint: string) => {
     }
   };
 
-  const getImageUrl = (filename : string) => {
-    return `${process.env.NEXT_PUBLIC_URLEXPRESS}/Image/${filename}`;
-  };
+  const getImageUrl = (filename:string) => {
+    return `${process.env.NEXT_PUBLIC_URLEXPRESS}/image/${filename}`;
+};
 
+const postData = async (endpoint: string, formData: FormData) => {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_URLEXPRESS}${endpoint}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
 
-export { fetchData, getImageUrl }
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`There was a problem posting data to ${endpoint}:`, error);
+    return null;
+  }
+};
+
+export { getData, getImageUrl, postData }

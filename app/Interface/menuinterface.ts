@@ -1,9 +1,9 @@
 export interface Menuinterface{
-  _id: string;
+  _id?: string;
   title: string;
   description: string;
   harga: string;
   category: string;
-  imagesrc: string;
   imagePath : string
 }
+
