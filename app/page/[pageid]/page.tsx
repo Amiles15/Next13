@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { Menuinterface } from "@/app/Interface/menuinterface";
 import { getData, getImageUrl, postData } from "../apicall/apicallservice";
+import { toast } from "sonner";
+
 
 const page = () => {
   const [matchaMenu, SetmacthaMenu] = useState<Menuinterface[]>([]);
@@ -127,10 +129,10 @@ const page = () => {
     const data = await postData('/listmenu', formDataWithImage);
   
     if (data) {
-      console.log('Success:', data);
+      toast.success('Data Berhasil Dikirim')
       // Handle success as needed
     } else {
-      console.error('Failed to post data.');
+      toast.error('Error Terjadi Kesalahan')
       // Handle error as needed
     }
     // console.log('formDataWithImage', formDataWithImage);
@@ -162,7 +164,7 @@ const page = () => {
                 />
               </div>
               <p className="mb-2 text-lg font-bold tracking-tight text-white dark:text-white">
-                {menuItem.harga}
+                Rp. {menuItem.harga}
               </p>
               <a
                 href="#"
