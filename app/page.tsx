@@ -18,11 +18,10 @@ export default function Home() {
       setDropdown(isOpen);
   };
 
-
   return (
     <main >
    
-      <NavComp></NavComp>
+      <NavComp loggedInUser={null}></NavComp>
      
       {/* Hero Section */}
       <section className="bg-center bg-no-repeat bg-[url('/src/matcha.jpg')] bg-gray-700 bg-blend-multiply">

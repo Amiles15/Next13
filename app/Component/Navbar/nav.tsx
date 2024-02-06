@@ -1,14 +1,31 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Cookies from 'js-cookie';
 
-const NavComp = () => {
+const NavComp = ({ loggedInUser }: { loggedInUser: string | null }) => {
   let [open, setOpen] = useState(false);
+  const [cookieName, setCookieName] = useState<string | null>(null);
   const [dropdown, setDropdown] = useState(false);
+  
   const handleDropdownToggle = (isOpen: boolean) => {
     setDropdown(isOpen);
   };
-  return (
 
+  useEffect(() => {
+    // Fetch the user's name from cookies when the component mounts
+    const nameFromCookie = Cookies.get('name');
+    setCookieName(nameFromCookie || null);
+  }, []);
+
+  const handleLogout = () => {
+    // Remove token and name from cookies
+    Cookies.remove('token');
+    Cookies.remove('name');
+    // Set cookieName state to null to hide the user's name in the navigation
+    setCookieName(null);
+  };
+  
+  return (
     <div className="shadow-md w-full fixed top-0 left-0 bg-slate-600">
       <div className="md:flex items-center justify-between py-2 md:px-10 px-7">
         <div
@@ -57,39 +74,43 @@ const NavComp = () => {
                 </label>
               </Link>
             </li>
-            <li className="relative mx-4 my-6 md:my-0">
-              <label
-                onMouseEnter={() => handleDropdownToggle(true)}
-                onMouseLeave={() => handleDropdownToggle(false)}
-                className="nav-link"
-              >
-                User
-              </label>
-              {dropdown && (
-                <div
+            {cookieName && (
+              <li className="relative mx-4 my-6 md:my-0">
+                <label
                   onMouseEnter={() => handleDropdownToggle(true)}
                   onMouseLeave={() => handleDropdownToggle(false)}
-                  className="dropdown-content absolute z-20 divide-y divide-gray-300 rounded-lg shadow w-20 dark:bg-gray-500 text-center"
+                  className="nav-link"
                 >
-                  <button className="hover:text-gray-800 ease-in-out">
-                    Profile
-                  </button>
-                  <button className="hover:text-gray-800 ease-in-out">
-                    Logout
-                  </button>
-                </div>
-              )}
-            </li>
-            <li className="mx-4 my-6 md:my-0">
-              <Link href={'/login'}>
-              <label
-                className="nav-link hover:text-gray-800 ease-in-out"
-                aria-current="page"
-              >
-                Login
-              </label>
-              </Link>
-            </li>
+                  <p> Hi, {cookieName}</p>
+                </label>
+                {dropdown && (
+                  <div
+                    onMouseEnter={() => handleDropdownToggle(true)}
+                    onMouseLeave={() => handleDropdownToggle(false)}
+                    className="dropdown-content absolute z-20 divide-y divide-gray-300 rounded-lg shadow w-20 dark:bg-gray-500 text-center"
+                  >
+                    <button  className="hover:text-gray-800 ease-in-out">
+                      Profile
+                    </button>
+                    <button onClick={handleLogout} className="hover:text-gray-800 ease-in-out">
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </li>
+            )}
+            {!cookieName && (
+              <li className="mx-4 my-6 md:my-0">
+                <Link href={'/login'}>
+                  <label
+                    className="nav-link hover:text-gray-800 ease-in-out"
+                    aria-current="page"
+                  >
+                    Login
+                  </label>
+                </Link>
+              </li>
+            )}
           </div>
         </ul>
       </div>
