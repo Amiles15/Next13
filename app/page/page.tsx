@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import SliderComp from "../Component/Slider/slider";
+import React, { useEffect, useState } from "react";
+import NavComp from "../Component/Navbar/nav";
+import { getData, getImageUrl } from "./apicall/apicallservice";
+import { Menuinterface } from "../Interface/menuinterface";
 
 export const metadata = {
   title: "Menu",
@@ -9,53 +11,33 @@ export const metadata = {
 };
 
 const page = () => {
-  // RAW DATA
-  const datamatcha = [
-    {
-      imagesrc: "/src/coldbrew.jpg",
-      title: "Cold Brew Coffe",
-      description: "Our Mactha Is Best Flafour",
-      buttonText: "Read more",
-      category: "Non Matcha",
-    },
-
-    {
-      imagesrc: "/src/matcha.jpg",
-      title: "Matcha Original",
-      description: "Our Mactha Is Best Flafour",
-      buttonText: "Read more",
-      category: "Matcha",
-    },
-
-    {
-      imagesrc: "/src/dalgona_latte.jpg",
-      title: "Dalgona Late",
-      description: "Our Mactha Is Best Flafour",
-      buttonText: "Read more",
-      category: "Non Matcha",
-    },
-    {
-      imagesrc: "/src/matcha_coffee.jpg",
-      title: "Matcha Coffee",
-      description: "Our Mactha Is Best Flafour",
-      buttonText: "Read more",
-      category: "Matcha",
-    },
-  ];
-  const categories = Array.from(
-    new Set(datamatcha.map((item) => item.category))
-  );
+  const [matchaMenu, SetmacthaMenu] = useState<Menuinterface[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const handleCategoryChange = (e: any) => {
+  
+  useEffect(() => {
+    const fetchMenuData = async () => {
+      try {
+        const data = await getData();
+        console.log("Fetched data:", data);
+        SetmacthaMenu(data); // Set the fetched data to state
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchMenuData();
+  }, []);
+  
+  const categories = ["All Categories", ...Array.from(new Set(matchaMenu.map(item => item.category)))];
+
+  const handleCategoryChange = (e:any) => {
     setSelectedCategory(e.target.value);
   };
   
-
   return (
     <>
-      <div className="">
-        <SliderComp></SliderComp>
-
+      <NavComp loggedInUser={null}></NavComp>
+      <div>
         <div className="p-10 px-4 text-center text-lg flex justify-between items-center">
           <h3 className="text-center">Our Best Product</h3>
           <select
@@ -63,7 +45,6 @@ const page = () => {
             value={selectedCategory}
             onChange={handleCategoryChange}
           >
-            <option value="All Category">All Categories</option>
             {categories.map((category, index) => (
               <option key={index} value={category}>
                 {category}
@@ -73,67 +54,40 @@ const page = () => {
         </div>
 
         <div className="w-full flex items-center justify-center px-4 mb-2">
-          {categories.map((category) => (
-            <div
-              key={category}
-              className={selectedCategory === category ? "" : "hidden"}
-            >
-              <h2 className="text-2xl font-semibold mb-2 text-center">
-                {category}
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                {datamatcha
-                  .filter(
-                    (item) =>
-                      selectedCategory === "All" ||
-                      item.category === selectedCategory
-                  )
-                  .map((item, index) => (
-                    <div className="px-3 mb-5" key={index}>
-                      <div className="px-3 mb-5">
-                        <div
-                          key={index}
-                          className="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                        >
+          <div>
+            {categories.map((category) => (
+              <div key={category}>
+                <h2 className="text-2xl font-semibold mb-2 text-center">{category}</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {matchaMenu
+                    .filter((menuItem) => selectedCategory === "All" || menuItem.category === category)
+                    .map((menuItem) => (
+                      <div className="px-3 mb-5" key={menuItem._id}>
+                        <div className="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                           <figure>
-                            <img src={item.imagesrc} alt="matcha" height={20} />
+                            <img src={getImageUrl(menuItem.imagePath)} alt="Matcha" className="mx-auto max-w-full" />
                           </figure>
                           <a href="#">
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                              {item.title}
+                              {menuItem.title}
                             </h5>
                           </a>
                           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                            {item.description}
+                            {menuItem.description}
                           </p>
                           <a
                             href="#"
                             className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                           >
-                            {item.buttonText}
-                            <svg
-                              className="w-3.5 h-3.5 ml-2"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 14 10"
-                            >
-                              <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M1 5h12m0 0L9 1m4 4L9 9"
-                              />
-                            </svg>
+                            Rp. {menuItem.harga}
                           </a>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </>

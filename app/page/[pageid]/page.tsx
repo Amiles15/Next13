@@ -5,7 +5,6 @@ import { Menuinterface } from "@/app/Interface/menuinterface";
 import { getData, getImageUrl, postData } from "../apicall/apicallservice";
 import { toast } from "sonner";
 
-
 const page = () => {
   const [matchaMenu, SetmacthaMenu] = useState<Menuinterface[]>([]);
   const [compressedImage, setCompressedImage] = useState<string | null>(null);
@@ -20,8 +19,8 @@ const page = () => {
   useEffect(() => {
     const fetchMenuData = async () => {
       try {
-        const data = await getData("/listmenu");
-        // console.log("Fetched data:", data);
+        const data = await getData();
+        console.log("Fetched data:", data);
         SetmacthaMenu(data); // Set the fetched data to state
       } catch (error) {
         console.error("Error fetching data:", error);

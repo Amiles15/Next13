@@ -1,42 +1,14 @@
-'use client'
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { Menuinterface } from "@/app/Interface/menuinterface";
+import { getData, getImageUrl } from "@/app/page/apicall/apicallservice";
 
 const SliderComp = () => {
-  const DataNewMenus = [
-    {
-      imagesrc: "/src/Matcha/blueberrymatcha.jpg",
-      title: "Blueberry Matcha",
-      description: "Our Mactha Is Best Flafour",
-      buttonText: "Read more",
-      harga:'Rp.40.000'
-    },
-
-    {
-      imagesrc: "/src/Matcha/MatchaSakura.jpg",
-      title: "Matcha Sakura",
-      description: "Our Mactha Is Best Flafour",
-      buttonText: "Read more",
-      harga:'Rp.25.000'
-    },
-
-    {
-      imagesrc: "/src/Matcha/strawberryMatcha.jpg",
-      title: "Strawberry Matcha",
-      description: "Our Mactha Is Best Flafour",
-      buttonText: "Read more",
-      harga:'22.000'
-    },
-    {
-      imagesrc: "/src/matcha.jpg",
-      title: "Matcha Nihonjin",
-      description: "Our Mactha Is Best Flafour",
-      buttonText: "Read more",
-      harga:'20.000'
-    },
-  ];
+  
+  const [matchaMenu, SetmacthaMenu] = useState<Menuinterface[]>([]);
   const settings = {
     dots: true,
     infinite: false,
@@ -72,27 +44,49 @@ const SliderComp = () => {
     ],
   };
 
+  useEffect(() => {
+    const fetchMenuData = async () => {
+      try {
+        const data = await getData();
+        // console.log("Fetched data:", data);
+        SetmacthaMenu(data); // Set the fetched data to state
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchMenuData();
+  }, []);
+
   return (
-    <><div>
-      <h1 className="text-center font-semibold text-lg">New Arrival</h1>
-    </div>
-    <div className="w-full flex justify-center items-center mt-8">
+    <>
+      <div className="p-28">
+        <h1 className="text-center font-semibold text-lg">New Arrival</h1>
+      </div>
+      <div className="w-full flex justify-center items-center">
         <Slider {...settings} className="w-9/12">
-          {DataNewMenus.map((item, index) => (
-            
-            <div className="card rounded-lg border-md overflow-hidden cursor-pointer md:h-[280px] border-[8px]" key={index}>
-              <div className="card-top w-full bg-slate-400">
-                <span className="z-40 bg-slate-500 bg-opacity-10">
-                   <h1 className="px-2">{item.title}</h1>
-                   <h2 className="px-2">{item.harga}</h2>
+          {matchaMenu?.map((menuItem, index) => (
+            <div
+              className="card rounded-lg border-md overflow-hidden cursor-pointer md:h-[280px] border-[8px]"
+              key={index}
+            >
+              <div className="card-top w-full bg-slate-400 ">
+                <span className=" bg-slate-500 bg-opacity-10">
+                  <h1 className="px-2">{menuItem.title}</h1>
                 </span>
-                <img src={item.imagesrc} alt={item.title} />
+                <img className="mx-auto md:-z-50"
+                  src={getImageUrl(menuItem.imagePath)}
+                  alt={menuItem.title}
+                  style={{ maxWidth: "180px"}}
+                />
               </div>
+              <h4 className="px-4">{menuItem.description}</h4>
+              <h2 className="px-2">Rp.{menuItem.harga}</h2>
             </div>
           ))}
         </Slider>
       </div>
-      </>
+    </>
   );
 };
 

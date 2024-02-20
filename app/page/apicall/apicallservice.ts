@@ -1,8 +1,9 @@
 
+  const ENDPOINT = '/listmenu'
 
-  const getData = async (endpoint: string) => {
+  const getData = async () => {
     try {
-      const url = `${process.env.NEXT_PUBLIC_URLEXPRESS}${endpoint}`;
+      const url = `${process.env.NEXT_PUBLIC_URLEXPRESS}${ENDPOINT}`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Network response was not ok.');
@@ -10,7 +11,7 @@
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error(`There was a problem fetching data from ${endpoint}:`, error);
+      console.error(`There was a problem fetching data from ${ENDPOINT}:`, error);
       return null;
     }
   };
