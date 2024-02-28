@@ -22,7 +22,7 @@ const handleLogin = async (e: any) => {
   formlogin.email = e.target[0].value;
   formlogin.password = e.target[1].value;
 
-  console.log('login', formlogin);
+  // console.log('login', formlogin);
 
   const response = await postLogin(formlogin);
 
@@ -43,7 +43,7 @@ const handleLogin = async (e: any) => {
 
   return (
     <>
-      <div className="bg-center bg-no-repeat bg-[url('/src/matcha.jpg')] bg-gray-700 bg-blend-multiply">
+      <div className="bg-center bg-no-repeat bg-[url('/src/Matchabg.jpg')] bg-gray-700 bg-blend-multiply">
         <div className="p-48 px-4 my-2 w-full ">
           <div className="">
             <form onSubmit={handleLogin} className="max-w-sm mx-auto border-white rounded-lg border-2 px-5">

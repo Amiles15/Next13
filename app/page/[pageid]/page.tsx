@@ -12,7 +12,7 @@ const page = () => {
     title: '',
     category: '',
     description: '',
-    harga: '',
+    harga: 0,
     imagePath : '',
   });
 
@@ -114,7 +114,7 @@ const page = () => {
     formDataWithImage.append('title', formData.title);
     formDataWithImage.append('category', formData.category);
     formDataWithImage.append('description', formData.description);
-    formDataWithImage.append('harga', formData.harga);
+    formDataWithImage.append('harga', formData.harga.toString());
   
     // Append the image file to FormData
     if (compressedImage) {
@@ -163,7 +163,7 @@ const page = () => {
                 />
               </div>
               <p className="mb-2 text-lg font-bold tracking-tight text-white dark:text-white">
-                Rp. {menuItem.harga}
+                Rp. {`${menuItem.harga}`}
               </p>
               <a
                 href="#"
@@ -249,8 +249,8 @@ const page = () => {
                     </svg>
                   </div>
                   <input
-                    value={formData.harga}
-                    onChange={(e) => setFormData({ ...formData, harga: e.target.value })}
+                    value={formData.harga.toString()}
+                    onChange={(e) => setFormData({ ...formData, harga: Number(e.target.value) })}
                     type="number"
                     className="block my-1 w-1/2 p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
