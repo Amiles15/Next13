@@ -14,6 +14,8 @@ const page = () => {
     const [matchaMenu, SetmacthaMenu] = useState<Menuinterface[]>([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchQuery, setSearchQuery] = useState("");
+    const [showMore, setShowMore] = useState(false);
+    const [visibleItems, setVisibleItems] = useState(6);
     
     // Filtered menu items based on selected category and search query
     const filteredMenu = matchaMenu.filter(menuItem => {
@@ -46,6 +48,13 @@ const page = () => {
       setSearchQuery(event.target.value);
     };
 
+   
+
+  const handleShowMore = () => {
+    setVisibleItems(filteredMenu.length);
+    setShowMore(true);
+  };
+
   return (
     <>
       <NavComp loggedInUser={null}></NavComp>
@@ -75,7 +84,7 @@ const page = () => {
             </form>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {filteredMenu.map((menuItem) => (
+              {filteredMenu.slice(0, visibleItems).map((menuItem) => (
                 <div className="px-3 mb-5" key={menuItem._id}>
                   <div className="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <figure>
@@ -99,7 +108,18 @@ const page = () => {
                 </div>
               ))}
             </div>
+            {filteredMenu.length > 6 && !showMore && (
+            <div className="flex">
+            <button
+              onClick={handleShowMore}
+              className="mx-auto px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Show More
+            </button>
+            </div>
+          )}
           </div>
+         
       </div>
     </>
   );

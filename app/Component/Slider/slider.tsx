@@ -81,7 +81,7 @@ const SliderComp = () => {
                 />
               </div>
               <h4 className="px-4">{menuItem.description}</h4>
-              <h2 className="px-2">Rp.{menuItem.harga}</h2>
+              <h2 className="px-2">Rp.{menuItem.harga.toString()}</h2>
             </div>
           ))}
         </Slider>
