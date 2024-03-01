@@ -1,12 +1,12 @@
 'use client'
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import NavComp from "./Component/Navbar/nav";
 
-export default function Home() {
 
+export default function Home() {
   const [dropdown, setDropdown] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
 
@@ -19,6 +19,7 @@ export default function Home() {
   };
 
   return (
+
     <main >
    
       <NavComp loggedInUser={null}></NavComp>
