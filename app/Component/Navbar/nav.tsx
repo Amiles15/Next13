@@ -99,7 +99,7 @@ const NavComp = ({ loggedInUser }: { loggedInUser: string | null }) => {
                 )}
               </li>
               <li className="mx-4 my-6 md:my-0">
-                <Link href={'/shop'}>
+                <Link href={'/cart'}>
                     <svg
                       className="inline-block w-10 h-10 -ml-2 -mt-2"
                       fill="currentColor"

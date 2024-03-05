@@ -5,5 +5,6 @@ export interface Menuinterface{
   harga: Number;
   category: string;
   imagePath : string
+  jumlah:Number;
 }
 
