@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import NavComp from "./Component/Navbar/nav";
+import InstallPWA from "./Component/NotifPwa/pwainstall";
 
 
 export default function Home() {
@@ -23,7 +24,6 @@ export default function Home() {
     <main >
    
       <NavComp loggedInUser={null}></NavComp>
-     
       {/* Hero Section */}
       <section className="bg-center bg-no-repeat bg-[url('/src/MatchaBg.jpg')] bg-gray-700 bg-blend-multiply">
         <div className="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
@@ -163,6 +163,7 @@ export default function Home() {
         </div>
       </footer>
       {/* Footer End */}
+      <InstallPWA />
     </main>
    
   );
