@@ -14,6 +14,7 @@ const page = () => {
     description: '',
     harga: 0,
     imagePath : '',
+    jumlah:0
   });
 
   useEffect(() => {

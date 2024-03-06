@@ -2,9 +2,9 @@ export interface Menuinterface{
   _id?: string;
   title: string;
   description: string;
-  harga: Number;
+  harga: number;
   category: string;
   imagePath : string
-  jumlah:Number;
+  jumlah:number;
 }
 

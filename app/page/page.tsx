@@ -19,8 +19,23 @@ const Page = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showMore, setShowMore] = useState(false);
   const [visibleItems, setVisibleItems] = useState(6);
-  const [jumlah, setJumlah] = React.useState(1);
+  const [selectedItemQuantities, setSelectedItemQuantities] = useState<Record<number, number>>({});
 
+  const plus = (index :any) => {
+    const currentQuantities = selectedItemQuantities[index] || 0;
+    setSelectedItemQuantities({
+        ...selectedItemQuantities,
+        [index]: currentQuantities + 1
+    });
+};
+
+  const minus = (index :any) => {
+    const currentQuantities = selectedItemQuantities[index] || 0;
+    setSelectedItemQuantities({
+        ...selectedItemQuantities,
+        [index]: currentQuantities - 1
+    });
+};
 
   useEffect(() => {
     const fetchMenuData = async () => {
@@ -60,34 +75,35 @@ const Page = () => {
 
   const AddToCart = async (menuItem: Menuinterface, jumlah: number) => {
     try {
-      const cartItem:cartInterface = {
-        _id: menuItem._id || '', // Ensure _id is present and convert to string
-        title: menuItem.title,
-        description: menuItem.description,
-        harga: menuItem.harga,
-        category: menuItem.category,
-        imagePath: menuItem.imagePath,
-        jumlah: jumlah // Use jumlah from the local state
-      };
-  
-      const response = await postMatchaMenu(cartItem);
-      if (response) {
-        toast.success('Data Berhasil Di Kirim');
-          // Handle success as needed
-      } else {
-        toast.error('Error Terjadi Kesalahan');
-          // Handle error as needed
-      }
+        // Check if jumlah is not undefined and not equal to 0
+        if (jumlah !== undefined && jumlah !== 0) {
+            const cartItem: cartInterface = {
+                _id: menuItem._id || '', // Ensure _id is present and convert to string
+                title: menuItem.title,
+                description: menuItem.description,
+                harga: menuItem.harga,
+                category: menuItem.category,
+                imagePath: menuItem.imagePath,
+                jumlah: jumlah // Use jumlah from the local state
+            };
+            console.log('jumlah',jumlah)
+            
+            const response = await postMatchaMenu(cartItem);
+            if (response) {
+                toast.success('Item Berhasil Di Tambah');
+            } else {
+              console.log('data',response)
+                toast.error('Error Terjadi Kesalahan');
+            }
+        } else {
+            toast.error('Jumlah tidak valid');
+            // Handle error as needed for undefined or 0 jumlah
+        }
     } catch (error) {
-      console.error('Error adding item to cart:', error);
+        console.error('Error adding item to cart:', error);
         // Handle error
     }
   }
-
-  const handleInputChange = (event:any) => {
-    const inputValue = parseInt(event.target.value) || 0; // Parse input value to an integer
-    setJumlah(inputValue); // Update jumlah state
-  };
 
   return (
     <>
@@ -119,44 +135,49 @@ const Page = () => {
           </div>
         
           <div className="grid grid-cols-2 gap-4">
-            {filteredMenu.slice(0, visibleItems).map((menuItem) => (
+            {filteredMenu.slice(0, visibleItems).map((menuItem, index) => (
               <div className="px-3 mb-5" key={menuItem._id}>
                 <div className="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                   <figure>
                     <img src={getImageUrl(menuItem.imagePath)} alt="Matcha" className="mx-auto max-w-full" />
                   </figure>
-                  <a href="#">
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  <label>
+                    <h5 className="mb-2 xl:text-2xl text-base font-bold tracking-tight text-gray-900 dark:text-white">
                       {menuItem.title}
                     </h5>
-                  </a>
+                  </label>
                   <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                     {menuItem.description}
                   </p>
                   <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                     Rp. {`${menuItem.harga}`}
-                  </p>    
+                  </p>
                   <div className="flex items-center justify-center w-full gap-2">
-                    <svg className="fill-current text-gray-600 w-3" viewBox="0 0 448 512">
-                      <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+                    <button onClick={()=>minus(index)} type="button" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-2 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                        <path stroke="currentColor" d="M1 1h16"/>
                     </svg>
-                    <input
-                      className="mx-2 border text-center w-8"
-                      type="number"
-                      value={jumlah}
-                      onChange={handleInputChange}
-                    />
-                    <svg className="fill-current text-gray-600 w-3" viewBox="0 0 448 512">
-                      <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                    </svg>
-                    <button onClick={() => AddToCart(menuItem, jumlah)} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                      Beli Minuman
+                    </button>
+                    <label typeof="number" className="mx-2 border text-center text-sm text-white w-8">{selectedItemQuantities[index] || 0}</label>
+                    <button onClick={() => plus(index)} type="button" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-2 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                      <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
+                      </svg>
+                    </button>
+            
+                    <button 
+                      onClick={() => AddToCart(menuItem, selectedItemQuantities[index])} 
+                      className="inline-flex items-center px-3 py-1 text-xs font-normal text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+                                xl:px-1 xl:py-2 xl:text-base"
+                    >
+                      Add Cart
                     </button>
                   </div>
                 </div>
               </div>
             ))}
-          </div> 
+          </div>
+
           {filteredMenu.length > 6 && !showMore && (
             <div className="flex">
               <button
